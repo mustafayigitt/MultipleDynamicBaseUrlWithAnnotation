@@ -1,6 +1,8 @@
 package com.mustafayigit.multipledynamicbaseurlwithannotation.di
 
 import com.mustafayigit.multipledynamicbaseurlwithannotation.data.remote.AuthService
+import com.mustafayigit.multipledynamicbaseurlwithannotation.data.remote.ContentService
+import com.mustafayigit.multipledynamicbaseurlwithannotation.data.remote.PaymentService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,7 +42,6 @@ object NetworkModule {
     }
 
 
-
     @Provides
     @Singleton
     fun provideAuthService(
@@ -49,7 +50,20 @@ object NetworkModule {
         return retrofit.create(AuthService::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideContentService(
+        retrofit: Retrofit
+    ): ContentService {
+        return retrofit.create(ContentService::class.java)
+    }
 
-
+    @Provides
+    @Singleton
+    fun providePaymentService(
+        retrofit: Retrofit
+    ): PaymentService {
+        return retrofit.create(PaymentService::class.java)
+    }
 
 }
