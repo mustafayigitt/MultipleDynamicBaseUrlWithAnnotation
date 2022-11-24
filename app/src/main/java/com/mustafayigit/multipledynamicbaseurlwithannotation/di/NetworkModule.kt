@@ -1,5 +1,6 @@
 package com.mustafayigit.multipledynamicbaseurlwithannotation.di
 
+import com.mustafayigit.multipledynamicbaseurlwithannotation.base.BaseUrlInterceptor
 import com.mustafayigit.multipledynamicbaseurlwithannotation.data.remote.AuthService
 import com.mustafayigit.multipledynamicbaseurlwithannotation.data.remote.ContentService
 import com.mustafayigit.multipledynamicbaseurlwithannotation.data.remote.PaymentService
@@ -23,9 +24,18 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideBaseUrlInterceptor(
+    ): BaseUrlInterceptor {
+        return BaseUrlInterceptor()
+    }
+
+    @Provides
+    @Singleton
     fun provideOkHttpClient(
+        baseUrlInterceptor: BaseUrlInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
+            .addInterceptor(baseUrlInterceptor)
             .build()
     }
 
@@ -40,7 +50,6 @@ object NetworkModule {
             .client(okHttpClient)
             .build()
     }
-
 
     @Provides
     @Singleton

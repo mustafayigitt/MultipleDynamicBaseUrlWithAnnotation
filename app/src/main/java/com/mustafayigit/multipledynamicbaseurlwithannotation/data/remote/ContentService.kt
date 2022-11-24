@@ -1,6 +1,8 @@
 package com.mustafayigit.multipledynamicbaseurlwithannotation.data.remote
 
+import com.mustafayigit.multipledynamicbaseurlwithannotation.base.Api
 import com.mustafayigit.multipledynamicbaseurlwithannotation.data.model.ContentModel
+import com.mustafayigit.multipledynamicbaseurlwithannotation.enums.ApiType
 import retrofit2.Response
 import retrofit2.http.GET
 
@@ -12,5 +14,6 @@ import retrofit2.http.GET
 interface ContentService {
 
     @GET("contents")
+    @Api(ApiType.CONTENT)
     suspend fun getContents(): Response<List<ContentModel>>
 }
