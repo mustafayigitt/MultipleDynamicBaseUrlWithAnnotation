@@ -66,7 +66,8 @@ class MainActivity : AppCompatActivity() {
                 items
             )
 
-            val selectedDeploymentType = EnvironmentManager.environments.find { it.apiType == selected }!!.deploymentType
+            val selectedDeploymentType = getDeploymentType(selected)
+
             spinner.setSelection(items.indexOf(selectedDeploymentType.name.lowercase()))
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -79,14 +80,10 @@ class MainActivity : AppCompatActivity() {
                         spinnerAuth -> ApiType.AUTH
                         spinnerContent -> ApiType.CONTENT
                         spinnerPayment -> ApiType.PAYMENT
-                        else -> ApiType.AUTH
+                        else -> throw IllegalArgumentException("Invalid spinner")
                     }
-                    val index =
-                        EnvironmentManager.environments.indexOfFirst { it.apiType == apiType }
-                    EnvironmentManager.environments[index] = EnvironmentModel(
-                        apiType = apiType,
-                        deploymentType = DeploymentType.values()[position]
-                    )
+                    val deploymentType = DeploymentType.values()[position]
+                    updateEnvironment(apiType, deploymentType)
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -96,5 +93,23 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun getDeploymentType(apiType: ApiType): DeploymentType {
+        return EnvironmentManager.environments.find { it.apiType == apiType }?.deploymentType
+            ?: throw IllegalArgumentException("Invalid api type")
+    }
+
+    private fun updateEnvironment(
+        apiType: ApiType,
+        deploymentType: DeploymentType
+    ) {
+        val index =
+            EnvironmentManager.environments.indexOfFirst { it.apiType == apiType }
+        EnvironmentManager.environments[index] = EnvironmentModel(
+            apiType = apiType,
+            deploymentType = deploymentType
+        )
+    }
+
 
 }
