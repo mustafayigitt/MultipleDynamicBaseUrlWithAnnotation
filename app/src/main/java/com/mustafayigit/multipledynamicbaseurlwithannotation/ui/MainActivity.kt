@@ -52,13 +52,13 @@ class MainActivity : AppCompatActivity() {
         with(mBinding) {
             val items = DeploymentType.values().map { it.name.lowercase() }
 
-            initSpinner(spinnerAuth, items, ApiType.AUTH)
-            initSpinner(spinnerContent, items, ApiType.CONTENT)
-            initSpinner(spinnerPayment, items, ApiType.PAYMENT)
+            initSpinner(spinnerAuth, items)
+            initSpinner(spinnerContent, items)
+            initSpinner(spinnerPayment, items)
         }
     }
 
-    private fun initSpinner(spinner: Spinner, items: List<String>, selected: ApiType) {
+    private fun initSpinner(spinner: Spinner, items: List<String>) {
         with(mBinding) {
             spinner.adapter = ArrayAdapter(
                 this@MainActivity,
@@ -66,9 +66,10 @@ class MainActivity : AppCompatActivity() {
                 items
             )
 
-            val selectedDeploymentType = getDeploymentType(selected)
-
+            val apiType = getApiTypeBySpinner(spinner)
+            val selectedDeploymentType = getDeploymentType(apiType)
             spinner.setSelection(items.indexOf(selectedDeploymentType.name.lowercase()))
+
             spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
@@ -76,14 +77,8 @@ class MainActivity : AppCompatActivity() {
                     position: Int,
                     id: Long
                 ) {
-                    val apiType = when (spinner) {
-                        spinnerAuth -> ApiType.AUTH
-                        spinnerContent -> ApiType.CONTENT
-                        spinnerPayment -> ApiType.PAYMENT
-                        else -> throw IllegalArgumentException("Invalid spinner")
-                    }
-                    val deploymentType = DeploymentType.values()[position]
-                    updateEnvironment(apiType, deploymentType)
+                    val newDeploymentType = DeploymentType.values()[position]
+                    updateEnvironment(apiType, newDeploymentType)
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -91,6 +86,15 @@ class MainActivity : AppCompatActivity() {
                 }
 
             }
+        }
+    }
+
+    private fun getApiTypeBySpinner(spinner: Spinner): ApiType {
+        return when (spinner) {
+            mBinding.spinnerAuth -> ApiType.AUTH
+            mBinding.spinnerContent -> ApiType.CONTENT
+            mBinding.spinnerPayment -> ApiType.PAYMENT
+            else -> throw IllegalArgumentException("Invalid spinner")
         }
     }
 

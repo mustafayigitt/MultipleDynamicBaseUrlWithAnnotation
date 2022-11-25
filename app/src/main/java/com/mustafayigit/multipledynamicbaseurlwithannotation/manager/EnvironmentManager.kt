@@ -31,6 +31,4 @@ object EnvironmentManager {
         return environments.find { it.apiType == apiType }!!.baseUrl
     }
 
-
-
 }
