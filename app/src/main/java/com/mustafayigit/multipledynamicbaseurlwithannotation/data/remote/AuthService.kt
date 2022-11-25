@@ -7,6 +7,7 @@ import com.mustafayigit.multipledynamicbaseurlwithannotation.enums.ApiType
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 
 /**
@@ -15,7 +16,7 @@ import retrofit2.http.GET
  */
 interface AuthService {
 
-    @GET("login")
+    @POST("login")
     @Api(ApiType.AUTH)
     suspend fun login(
         @Body credentials: JsonObject

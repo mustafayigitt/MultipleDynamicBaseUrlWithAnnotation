@@ -11,7 +11,7 @@ import com.mustafayigit.multipledynamicbaseurlwithannotation.enums.DeploymentTyp
  */
 object EnvironmentManager {
 
-    val environments = listOf(
+    val environments = mutableListOf(
         EnvironmentModel(
             apiType = ApiType.AUTH,
             deploymentType = DeploymentType.PRODUCTION
@@ -22,7 +22,7 @@ object EnvironmentManager {
         ),
         EnvironmentModel(
             apiType = ApiType.PAYMENT,
-            deploymentType = DeploymentType.BETA
+            deploymentType = DeploymentType.PRODUCTION
         ),
     )
 

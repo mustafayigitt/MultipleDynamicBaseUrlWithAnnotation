@@ -22,13 +22,13 @@ data class EnvironmentModel(
     fun setBaseUrl(
         apiType: ApiType,
         deploymentType: DeploymentType
-    ): String {
+    ) {
         val prefix = when (deploymentType) {
             DeploymentType.ALPHA -> "alpha-"
             DeploymentType.BETA -> "beta-"
             DeploymentType.PRODUCTION -> ""
         }
-        return "$prefix${apiType.url}"
+        baseUrl = "https://$prefix${apiType.url}"
     }
 
     override fun toString(): String {
